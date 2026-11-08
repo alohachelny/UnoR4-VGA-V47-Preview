@@ -17,7 +17,7 @@ Oscilloscope traces of the VGA timing signals, captured on the corresponding Ard
 | File | Signal | Expected |
 | :--- | :--- | :--- |
 | `oscilloscope_01.jpg` | HSync on D9 | ~4 µs low pulse, period ~31.77 µs (~31.5 kHz) |
-| `oscilloscope_02.jpg` | VSync on D8 | ~64 µs low pulse, period ~16.67 ms (60 Hz) |
+| `oscilloscope_02.jpg` | VSync on D8 | ~95 µs low pulse, period ~16.67 ms (60 Hz) |
 
 ### `video/`
 Short demo video of the engine running.
@@ -53,7 +53,7 @@ Short demo video of the engine running.
 | Файл | Сигнал | Ожидание |
 | :--- | :--- | :--- |
 | `oscilloscope_01.jpg` | HSync на D9 | Низкий импульс ~4 мкс, период ~31.77 мкс (31.5 кГц) |
-| `oscilloscope_02.jpg` | VSync на D8 | Низкий импульс ~64 мкс, период ~16.67 мс (60 Гц) |
+| `oscilloscope_02.jpg` | VSync на D8 | Низкий импульс ~95 мкс, период ~16.67 мс (60 Гц) |
 
 ### `video/`
 Короткое демо-видео работы движка.

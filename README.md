@@ -10,7 +10,7 @@ The project generates VGA-compatible raster timing using SPI1, DMA and GPT7 hard
 
 ## Demo Video
 
-<video src="media/video/vga_demo.mp4" controls width="640"></video>
+https://github.com/user-attachments/assets/3b2e57c9-746e-4bc4-8724-906b24b6139a
 
 If the video does not play inline, open it directly: [vga_demo.mp4](media/video/vga_demo.mp4).
 
@@ -124,9 +124,7 @@ The author, **alohachelny**, must be credited, and a link to this repository mus
 
 ## Демонстрационное видео
 
-<video src="media/video/vga_demo.mp4" controls width="640"></video>
-
-Если видео не воспроизводится прямо в окне, откройте файл: [vga_demo.mp4](media/video/vga_demo.mp4).
+Видео демонстрации размещено выше, в разделе [Demo Video](#demo-video).
 
 ## Изображение и осциллограммы
 

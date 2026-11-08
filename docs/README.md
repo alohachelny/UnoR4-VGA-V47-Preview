@@ -3,7 +3,7 @@
 This document briefly explains the low-level architecture of the V47.0 engine.
 
 ## 1. Timing & Synchronization
-*   **HSync:** Generated entirely by hardware using the GPT7 timer. The timer period is set to 1525 ticks (~31.77 kHz).
+*   **HSync:** Generated entirely by hardware using the GPT7 timer. The timer period is set to 1525 ticks (~31.77 µs, corresponding to approximately 31.475 kHz).
 *   **VSync:** Generated in software during the frame blanking period.
 *   **Hardware Line Start:** Instead of relying on software delays (`waitAbs`), the engine uses a GPT7 Compare Match event (GTCCRA) to trigger DMAC1. DMAC1 writes the first 32-bit word directly into the SPI data register. This eliminates the "jitter" (0-5 CPU ticks delay) that caused jagged pixels.
 

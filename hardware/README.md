@@ -1,98 +1,124 @@
 # Hardware Connections & Pinout
 
 ## VGA Connector Pinout (DE-15)
-For a standard VGA cable, you only need a few pins. 
 
 **Monochrome (Green) Setup:**
-*   **Pin 1 (Red):** Leave unconnected or connect to GND.
-*   **Pin 2 (Green):** Connect to Arduino D11 via a 470–520Ω resistor.
-*   **Pin 3 (Blue):** Leave unconnected or connect to GND.
-*   **Pin 13 (HSync):** Connect to Arduino D9 via a 470–750Ω resistor.
-*   **Pin 14 (VSync):** Connect to Arduino D8 via a 470–750Ω resistor.
-*   **Pins 5, 6, 7, 8, 10 (GND):** Connect to Arduino GND.
 
-**Alternative Colors & White Setup:**
-*   To use a **Red** or **Blue** video channel instead of Green, simply connect the Arduino signal to Pin 1 or Pin 3 respectively (using the same 470-520Ω resistor).
-*   To create a **custom color** (or White), connect the R, G, and B pins together. You can use a single resistor to the Arduino pin, or better, use separate 470-520Ω resistors for each pin to prevent cross-talk and create custom mixed colors via your own voltage divider network.
+| VGA Pin | Description | Arduino Connection |
+| :--- | :--- | :--- |
+| Pin 1 (Red) | Not used | Leave unconnected (or tie to GND) |
+| Pin 2 (Green) | Video | D11 via **470–680 Ω** resistor |
+| Pin 3 (Blue) | Not used | Leave unconnected (or tie to GND) |
+| Pin 13 (HSync) | Horizontal Sync | D9 via **470–1 kΩ** resistor |
+| Pin 14 (VSync) | Vertical Sync | D8 via **470–1 kΩ** resistor |
+| Pins 5, 6, 7, 8, 10 (GND) | Ground | Arduino GND (short, thick wire) |
 
-## Arduino Uno R4 Minima Pinout
+**Alternative Colors / White:**
+*   To use **Red** or **Blue** instead of Green — connect the Arduino signal to Pin 1 or Pin 3 respectively.
+*   To make **White** (or any custom color) — connect R, G and B pins together. Use separate 470–680 Ω resistors on each color pin to avoid crosstalk.
+
+## Arduino Uno R4 Minima Pin Assignment
 
 | Arduino Pin | RA4M1 Port | Function | Description |
 | :--- | :--- | :--- | :--- |
-| **D9** | P303 | HSync | Hardware timer output (GPT7). |
-| **D8** | P304 | VSync | Software GPIO. |
-| **D11** | P109 | Video | SPI1 MOSI (Data output). |
-| **D2** | P105 | Button 1 | Adjust line phase (BEG +). |
-| **D3** | P104 | Button 2 | Adjust line phase (BEG -). |
-| **D5** | P102 | Button 3 | Shift window left. |
-| **D6** | P106 | Button 4 | Shift window right. |
+| **D9** | P303 | HSync | Hardware GPT7 output |
+| **D8** | P304 | VSync | Software GPIO |
+| **D11** | P109 | Video | SPI1 MOSI (data) |
+| **D2** | P105 | Button 1 | BEG + |
+| **D3** | P104 | Button 2 | BEG − |
+| **D4** | P103 | Button 3 | Reserved (unused in V47.0) |
+| **D5** | P102 | Button 4 | Window shift left |
+| **D6** | P106 | Button 5 | Window shift right |
 
-## Schematic Notes & Resistor Values
+## Electrical Characteristics & Resistor Values
 
-*Important note: Although the RA4M1 chip operates at 3.3V internally, the Uno R4 Minima uses a level shifter on its digital I/O pins, meaning they output **5V**.*
+**Board logic level:** The Arduino Uno R4 Minima exposes **5 V logic** on its digital pins, even though the RA4M1 silicon itself is a 3.3 V part. The board uses an on-board level shifter between the MCU and the headers. Digital pins can source/sink **up to 8 mA** per pin (per Arduino documentation).
 
-Based on empirical testing and electrical calculations, the following resistor values are recommended:
+### 1. Video Line (470–680 Ω)
 
-### 1. Video Line (470–520 Ω)
-*   **Why:** The VGA standard expects a 0.7V peak-to-peak signal into a 75Ω load. Using a voltage divider formula with a 5V source (\(0.7V = 5V \times \frac{75Ω}{75Ω + R}\)), the ideal series resistor is approximately **460Ω**.
-*   **Practical:** 470Ω gives a perfectly bright image and is the theoretical ideal. 520Ω gives a slightly dimmer but completely safe signal.
-*   *Warning:* Do not use resistors lower than 400Ω for video, as you risk overvoltage on the VGA monitor.
+*   **Why these values:** The VGA standard expects a 0.7 V signal into a 75 Ω load. With a 5 V source, the ideal series resistor is:
 
-### 2. Sync Lines (470–750 Ω)
-*   **Why:** The sync signals (HSync and VSync) don't require precise voltage matching but must pull the line cleanly.
-*   **Empirical data:** Testing showed that **250Ω is too weak** (causing signal instability) and places a **very high load on the GPIO pin** (drawing 20mA, which is the absolute maximum limit). 
-*   **Recommendation:** **470Ω to 750Ω** (or even up to 1 kΩ depending on your monitor) provides a crisp, stable sync pulse while keeping the current draw safely between 6mA and 10mA.
+    `R = 75 × (5 / 0.7 − 1) ≈ 461 Ω`
 
-### 3. Ground (GND)
-*   **Recommendation:** Use the shortest and thickest wire possible between the Arduino GND and the VGA connector GND. At 24 MHz SPI speeds, a poor ground connection will cause noise and "sparkles" on the screen.
+    So **470 Ω** gives the correct 0.7 V level.
+
+*   **Current check:** `I = 5 V / (470 + 75) ≈ 9.2 mA`. This is **above** the 8 mA pin limit on peak. However, the video line is only active during ~52% of the visible line time (pixels are ~50/50 black/white), so the average current stays well below 8 mA. **470 Ω is a good practical value and is used in the reference build.**
+
+*   **Safer alternative:** If you want to stay strictly within the 8 mA limit, use **680 Ω**. The signal drops to about 0.5 V, which is still within the VGA spec (0–0.7 V per channel), just slightly dimmer. **680 Ω is recommended for continuous long-term use.**
+
+### 2. Sync Lines (470–1 kΩ)
+
+*   **Why these values:** Sync signals don't require a precise voltage; they just need to pull the line cleanly.
+*   **Empirical data from this project:**
+    *   **250 Ω — too weak**, signal unstable on some monitors, and current 20 mA (way over 8 mA limit).
+    *   **470 Ω — works reliably** on tested monitors. Peak current 10.6 mA, but sync is only 4 µs out of every 31.7 µs (12.6% duty), so average current is ~1.3 mA.
+    *   **750 Ω to 1 kΩ — works reliably and is safest**. Peak current 6.7–5 mA, average well below 1 mA.
+*   **Recommendation:** **470 Ω** if you want maximum compatibility on old monitors; **680 Ω–1 kΩ** if you want to stay strictly within spec.
+
+### 3. Ground
+
+Short, thick wire from Arduino GND to VGA connector GND. At 24 MHz SPI, a poor ground causes visible noise ("sparkles").
 
 ---
 ---
 
 # Подключение и распиновка (Русская версия)
 
-## Распиновка разъема VGA (DE-15)
-Для стандартного VGA-кабеля вам нужно всего несколько пинов.
+## Распиновка разъёма VGA (DE-15)
 
-**Монохромный режим (Зеленый):**
-*   **Пин 1 (Красный):** Оставить неподключенным или посадить на GND.
-*   **Пин 2 (Зеленый):** Подключить к пину D11 Arduino через резистор **470–520 Ом**.
-*   **Пин 3 (Синий):** Оставить неподключенным или посадить на GND.
-*   **Пин 13 (HSync):** Подключить к пину D9 Arduino через резистор **470–750 Ом**.
-*   **Пин 14 (VSync):** Подключить к пину D8 Arduino через резистор **470–750 Ом**.
-*   **Пины 5, 6, 7, 8, 10 (GND):** Подключить к GND Arduino.
+**Монохромный режим (зелёный):**
 
-**Альтернативные цвета и Белый:**
-*   Если вы хотите использовать **Красный** или **Синий** канал вместо Зеленого, просто подключите сигнал с Arduino к Пину 1 или Пину 3 соответственно (через такой же резистор 470-520 Ом).
-*   Если вы хотите получить **свой цвет** (или Белый), соедините пины R, G и B вместе. Вы можете использовать один резистор к выводу Arduino, либо (что правильнее) использовать отдельные резисторы 470-520 Ом для каждого пина, чтобы избежать перекрестных помех и собрать свой собственный делитель напряжения для нужного оттенка.
+| Пин VGA | Назначение | Подключение к Arduino |
+| :--- | :--- | :--- |
+| Пин 1 (Красный) | Не используется | Оставить свободным (или на GND) |
+| Пин 2 (Зелёный) | Видео | D11 через **470–680 Ом** |
+| Пин 3 (Синий) | Не используется | Оставить свободным (или на GND) |
+| Пин 13 (HSync) | Строчная синхронизация | D9 через **470 Ом–1 кОм** |
+| Пин 14 (VSync) | Кадровая синхронизация | D8 через **470 Ом–1 кОм** |
+| Пины 5, 6, 7, 8, 10 (GND) | Земля | GND Arduino (короткий толстый провод) |
+
+**Другие цвета / Белый:**
+*   Чтобы использовать **Красный** или **Синий** вместо зелёного — подключите сигнал к Пину 1 или Пину 3 соответственно.
+*   Чтобы получить **Белый** (или свой оттенок) — соедините пины R, G и B вместе. Используйте отдельные резисторы 470–680 Ом на каждый цвет, чтобы избежать перекрёстных помех.
 
 ## Распиновка Arduino Uno R4 Minima
 
 | Пин Arduino | Порт RA4M1 | Функция | Описание |
 | :--- | :--- | :--- | :--- |
-| **D9** | P303 | HSync | Аппаратный выход таймера (GPT7). |
-| **D8** | P304 | VSync | Программный вывод (GPIO). |
-| **D11** | P109 | Video | SPI1 MOSI (Выход данных). |
-| **D2** | P105 | Кнопка 1 | Регулировка фазы строки (BEG +). |
-| **D3** | P104 | Кнопка 2 | Регулировка фазы строки (BEG -). |
-| **D5** | P102 | Кнопка 3 | Сдвиг окна влево. |
-| **D6** | P106 | Кнопка 4 | Сдвиг окна вправо. |
+| **D9** | P303 | HSync | Аппаратный выход GPT7 |
+| **D8** | P304 | VSync | Программный GPIO |
+| **D11** | P109 | Video | SPI1 MOSI (данные) |
+| **D2** | P105 | Кнопка 1 | BEG + |
+| **D3** | P104 | Кнопка 2 | BEG − |
+| **D4** | P103 | Кнопка 3 | Зарезервирована (в V47.0 не используется) |
+| **D5** | P102 | Кнопка 4 | Сдвиг окна влево |
+| **D6** | P106 | Кнопка 5 | Сдвиг окна вправо |
 
-## Схемотехника и номиналы резисторов
+## Электрические характеристики и номиналы резисторов
 
-*Важное примечание: Хотя чип RA4M1 работает от 3.3В, на Uno R4 Minima стоят сдвиговые регистры, поэтому цифровые выводы выдают **5 Вольт**.*
+**Логические уровни платы:** Arduino Uno R4 Minima выдаёт на цифровых выводах **5 В**, хотя сам кристалл RA4M1 работает от 3.3 В. На плате стоит сдвиговый регистр уровней между MCU и гребёнкой. Максимальный ток на цифровой вывод по документации Arduino — **до 8 мА**.
 
-На основе практических тестов и расчетов рекомендуются следующие номиналы:
+### 1. Видеолиния (470–680 Ом)
 
-### 1. Видеолиния (470–520 Ом)
-*   **Почему:** Стандарт VGA ожидает сигнал с размахом 0.7 В на нагрузке 75 Ом. По формуле делителя напряжения (\(0.7В = 5В \times \frac{75}{75 + R}\)), идеальный резистор — около **460 Ом**.
-*   **Практика:** 470 Ом дают идеальную яркость. 520 Ом дают чуть более тусклый, но абсолютно безопасный сигнал.
-*   *Внимание:* Не используйте резисторы меньше 400 Ом для видео, это может превысить допустимое напряжение на входе монитора.
+*   **Почему такие номиналы:** Стандарт VGA ожидает сигнал 0.7 В на нагрузке 75 Ом. При источнике 5 В идеальный последовательный резистор:
+    
+    `R = 75 × (5 / 0.7 − 1) ≈ 461 Ом`
+    
+    То есть **470 Ом** даёт ровно 0.7 В.
 
-### 2. Линии синхронизации (470–750 Ом)
-*   **Почему:** Сигналы синхронизации не требуют точного согласования по напряжению, но должны четко «просаживать» линию.
-*   **Практика:** Тесты показали, что резистор на **250 Ом — слишком слабый** (вызывает нестабильность) и дает **очень высокую нагрузку на вывод** (ток 20 мА, это абсолютный предел). 
-*   **Рекомендация:** **470–750 Ом** (или даже до 1 кОм в зависимости от монитора) обеспечивают чистый синхроимпульс при безопасном токе 6-10 мА.
+*   **Проверка по току:** `I = 5 В / (470 + 75) ≈ 9.2 мА`. Это **выше** предела 8 мА по пику. Однако видеолиния активна только ~52% времени видимой строки (пиксели распределены примерно 50/50), поэтому средний ток остаётся ниже 8 мА. **470 Ом — рабочее значение, используется в референсной сборке.**
 
-### 3. Земля (GND)
-*   **Рекомендация:** Используйте максимально короткий и толстый провод между GND Arduino и GND разъема VGA. На частоте SPI 24 МГц плохой контакт земли вызовет шум и «искры» на экране.
+*   **Более безопасный вариант:** **680 Ом** — сигнал ~0.5 В, что укладывается в стандарт VGA (0–0.7 В), но чуть тусклее. **680 Ом рекомендуется для долговременного использования.**
+
+### 2. Линии синхронизации (470 Ом–1 кОм)
+
+*   **Почему такие номиналы:** синхронизация не требует точного напряжения, главное — чётко «просадить» линию.
+*   **Практика проекта:**
+    *   **250 Ом — слишком слабо**, нестабильно на некоторых мониторах, ток 20 мА (далеко за 8 мА).
+    *   **470 Ом — работает надёжно** на проверенных мониторах. Пиковый ток 10.6 мА, но синхроимпульс занимает 4 мкс из 31.7 мкс (12.6% скважности), средний ток ~1.3 мА.
+    *   **750 Ом–1 кОм — работает надёжно и безопасно по току**. Пиковый ток 6.7–5 мА, средний < 1 мА.
+*   **Рекомендация:** **470 Ом** — для максимальной совместимости со старыми мониторами; **680 Ом–1 кОм** — если хочется остаться строго в пределах спецификации.
+
+### 3. Земля
+
+Короткий толстый провод от GND Arduino к GND VGA-разъёма. На частоте SPI 24 МГц плохая земля даёт видимый шум («искры»).

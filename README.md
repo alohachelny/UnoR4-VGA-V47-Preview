@@ -18,7 +18,7 @@ If the video does not play inline, open it directly: [vga_demo.mp4](media/video/
 
 | VGA Display | HSync — D9 | VSync — D8 |
 | :---: | :---: | :---: |
-| ![VGA Display](media/display/vga_display.jpg) | ![HSync](media/oscilloscope/oscilloscope_01.jpg) | ![VSync](media/oscilloscope/oscilloscope_02.jpg) |
+| ![VGA Display](media/display/vga_display.jpg) | ![HSync](media/oscilloscope/oscilloscope_02.jpg) | ![VSync](media/oscilloscope/oscilloscope_01.jpg) |
 
 ## Video Format: 320×240 and VGA 640×480
 
@@ -132,7 +132,7 @@ The author, **alohachelny**, must be credited, and a link to this repository mus
 
 | VGA-экран | HSync — D9 | VSync — D8 |
 | :---: | :---: | :---: |
-| ![VGA Display](media/display/vga_display.jpg) | ![HSync](media/oscilloscope/oscilloscope_01.jpg) | ![VSync](media/oscilloscope/oscilloscope_02.jpg) |
+| ![VGA Display](media/display/vga_display.jpg) | ![HSync](media/oscilloscope/oscilloscope_02.jpg) | ![VSync](media/oscilloscope/oscilloscope_01.jpg) |
 
 ## Формат изображения: 320×240 и VGA 640×480
 

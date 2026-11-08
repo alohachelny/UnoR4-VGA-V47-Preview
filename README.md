@@ -15,7 +15,7 @@ Zero-copy DMA, hardware line start (GPT7), SPI1 @ 24 MHz, and a built-in bouncin
 
 | VGA Display | HSync (HSYNC pin) | VSync (VSYNC pin) |
 | :---: | :---: | :---: |
-| ![VGA Display](media/display/vga_display.jpg) | ![HSync](media/oscilloscope/oscilloscope_01.jpg) | ![VSync](media/oscilloscope/oscilloscope_02.jpg) |
+| ![VGA Display](media/display/vga_display.jpg) | ![HSync](media/oscilloscope/oscilloscope_02.jpg) | ![VSync](media/oscilloscope/oscilloscope_01.jpg) |
 
 ## 📐 About the "320×240" Resolution
 

@@ -2,21 +2,6 @@
 // V47.0: Frame 2px + HARDWARE LINE START
 // (SPI1 + DMAC, VRAM 320x240)
 // ============================================================
-//
-// WHY WERE THERE JAGGED PIXELS? (lines shifted by 1-2 pixels)
-// Previously, the start of the stream on each line was done by the CPU: 
-// a waitAbs() loop spins with 4-5 cycles per iteration, and exiting it 
-// randomly delays by 0...5 CPU cycles. At 24 MHz SPI, 5 cycles is 2.4 bits, 
-// i.e., 1-2 pixels. The picture depends on the remainder, changing from line 
-// to line. Hardware transmission (DMAC) has no jitter: the jaggedness was 
-// caused precisely by the START of the first SPDR write.
-//
-// WHAT WAS DONE:
-// Line start is now hardware-driven (HW_START = 1):
-// GPT7 (same timer as HSYNC) triggers the GTCCRA compare event (0x08F).
-// DMAC1 writes the FIRST word of the line into SPDR. The rest is handled by 
-// DMAC0 via the SPI1_TXI event. The CPU is no longer involved in the start.
-
 #include <SPI.h>
 #include <FspTimer.h>
 #include "bsp_api.h"

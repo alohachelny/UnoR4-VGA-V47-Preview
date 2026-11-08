@@ -97,7 +97,7 @@ Zero-copy DMA, аппаратный старт строки (GPT7), SPI1 на 24
 
 | Изображение | HSync | VSync |
 | :---: | :---: | :---: |
-| ![VGA Display](media/display/vga_display.jpg) | ![HSync](media/oscilloscope/oscilloscope_01.jpg) | ![VSync](media/oscilloscope/oscilloscope_02.jpg) |
+| ![VGA Display](media/display/vga_display.jpg) | ![HSync](media/oscilloscope/oscilloscope_02.jpg) | ![VSync](media/oscilloscope/oscilloscope_01.jpg) |
 
 ## 📐 Про разрешение «320×240»
 

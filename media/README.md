@@ -16,8 +16,8 @@ Oscilloscope traces of the VGA timing signals, captured on the corresponding Ard
 
 | File | Signal | Expected |
 | :--- | :--- | :--- |
-| `oscilloscope_01.jpg` | HSync on D9 | ~4 µs low pulse, period ~31.77 µs (~31.5 kHz) |
-| `oscilloscope_02.jpg` | VSync on D8 | ~95 µs low pulse, period ~16.67 ms (60 Hz) |
+| `oscilloscope_02.jpg` | HSync on D9 | ~4 µs low pulse, period ~31.77 µs (~31.5 kHz) |
+| `oscilloscope_01.jpg` | VSync on D8 | ~95 µs low pulse, period ~16.67 ms (60 Hz) |
 
 ### `video/`
 Short demo video of the engine running.
@@ -28,10 +28,11 @@ Short demo video of the engine running.
 
 ## 📌 How to View
 
-*   **Photos** (`.jpg`) — open directly in a browser, or view them inline in the main [`README.md`](../README.md).
-*   **Video** (`.mp4`) — the main `README.md` embeds it with a `<video>` tag. If your browser does not play it inline, download the file and open it in VLC / any video player.
+* **Photos** (`.jpg`) — open directly in a browser, or view them inline in the main [`README.md`](../README.md).
+* **Video** (`.mp4`) — the main `README.md` embeds it with a `<video>` tag. If your browser does not play it inline, download the file and open it in VLC / any video player.
 
 ---
+
 ---
 
 # Медиа-файлы (Русская версия)
@@ -52,8 +53,8 @@ Short demo video of the engine running.
 
 | Файл | Сигнал | Ожидание |
 | :--- | :--- | :--- |
-| `oscilloscope_01.jpg` | HSync на D9 | Низкий импульс ~4 мкс, период ~31.77 мкс (31.5 кГц) |
-| `oscilloscope_02.jpg` | VSync на D8 | Низкий импульс ~95 мкс, период ~16.67 мс (60 Гц) |
+| `oscilloscope_02.jpg` | HSync на D9 | Низкий импульс ~4 мкс, период ~31.77 мкс (31.5 кГц) |
+| `oscilloscope_01.jpg` | VSync на D8 | Низкий импульс ~95 мкс, период ~16.67 мс (60 Гц) |
 
 ### `video/`
 Короткое демо-видео работы движка.
@@ -64,5 +65,5 @@ Short demo video of the engine running.
 
 ## 📌 Как посмотреть
 
-*   **Фото** (`.jpg`) — открываются прямо в браузере, встроены в главный [`README.md`](../README.md).
-*   **Видео** (`.mp4`) — встроено в главный `README.md` через тег `<video>`. Если браузер не воспроизводит — скачайте файл и откройте в VLC или любом видеоплеере.
+* **Фото** (`.jpg`) — открываются прямо в браузере, встроены в главный [`README.md`](../README.md).
+* **Видео** (`.mp4`) — встроено в главный `README.md` через тег `<video>`. Если браузер не воспроизводит — скачайте файл и откройте в VLC или любом видеоплеере.
